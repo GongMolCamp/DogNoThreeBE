@@ -5,7 +5,7 @@ package gongnon;
 
 public class App {
     public String getGreeting() {
-        return "Helldddo World!";
+        return "Hello World!";
     }
 
     public static void main(String[] args) {
