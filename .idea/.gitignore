@@ -8,4 +8,4 @@
 /dataSources.local.xml
 
 # Ignore application-secret.yml (각종 키값, 비밀번호 등이 들어있는 파일)
-application-secret.yml
+src/main/resources/application-secret.yml
