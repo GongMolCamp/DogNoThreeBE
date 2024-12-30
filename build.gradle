@@ -30,6 +30,9 @@ dependencies {
 
     // Testing dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // h2 database
+    implementation 'com.h2database:h2'
 }
 
 tasks.named('test') {
