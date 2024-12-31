@@ -33,6 +33,9 @@ dependencies {
 
     // h2 database
     implementation 'com.h2database:h2'
+
+    // jsoup
+    implementation 'org.jsoup:jsoup:1.16.1'
 }
 
 tasks.named('test') {

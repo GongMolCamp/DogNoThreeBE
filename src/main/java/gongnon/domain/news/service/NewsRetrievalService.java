@@ -30,7 +30,7 @@ public class NewsRetrievalService {
 	private String clientSecret;
 
 	private final RestTemplate restTemplate = new RestTemplate();
-	private final ObjectMapper objectMapper = new ObjectMapper(); // ObjectMapper ÃÊ±âÈ­
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	public NewsResponseDto getTodayEconomyNews(String query) {
 		String url = baseUrl + "?query=" + query + "&display=10&sort=date";
@@ -45,14 +45,13 @@ public class NewsRetrievalService {
 		try {
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
-			// API ÀÀ´ä ·Î±×
-			System.out.println("API ÀÀ´ä: " + response.getBody());
-
+			// JSON ë°ì´í„°ë¥¼ ë””ì½”ë”©í•˜ì—¬ ì¶œë ¥
 			JsonNode rootNode = objectMapper.readTree(response.getBody());
+			System.out.println("API ì‘ë‹µ: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode));
+
 			JsonNode itemsNode = rootNode.path("items");
 
 			if (!itemsNode.isArray() || itemsNode.isEmpty()) {
-				// °Ë»ö °á°ú°¡ ¾ø´Â °æ¿ì ºó ÀÀ´ä ¹İÈ¯
 				return new NewsResponseDto(List.of());
 			}
 
@@ -61,7 +60,7 @@ public class NewsRetrievalService {
 
 			return new NewsResponseDto(articles);
 		} catch (Exception e) {
-			throw new RuntimeException("Naver News API È£Ãâ¿¡ ½ÇÆĞÇß½À´Ï´Ù. ¿¡·¯ ¸Ş½ÃÁö: " + e.getMessage());
+			throw new RuntimeException("Naver News API í˜¸ì¶œì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤. ì—ëŸ¬ ë©”ì‹œì§€: " + e.getMessage());
 		}
 	}
 }
