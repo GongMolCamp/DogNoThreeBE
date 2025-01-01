@@ -24,6 +24,5 @@ public class NewsArticle {
 
 	private LocalDateTime pubDate;
 
-	// 추가 필드: 예를 들어, 저장 일자
 	private LocalDateTime createdDate = LocalDateTime.now();
 }
