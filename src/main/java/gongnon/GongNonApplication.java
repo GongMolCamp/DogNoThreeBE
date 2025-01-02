@@ -9,6 +9,6 @@ public class GongNonApplication {
     public static void main(String[] args) {
         SpringApplication.run(GongNonApplication.class, args);
         System.out.println("GongNon Application is running...");
-        System.out.println("haha");
+        System.out.println("haha!");
     }
 }
