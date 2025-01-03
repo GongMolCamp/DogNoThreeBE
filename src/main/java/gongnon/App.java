@@ -5,7 +5,7 @@ package gongnon;
 
 public class App {
     public String getGreeting() {
-        return "no Hellooooo GongNon!!!";
+        return "no !!";
     }
 
     public static void main(String[] args) {
