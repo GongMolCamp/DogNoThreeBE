@@ -6,3 +6,10 @@ build
 
 # Ignore application-secret.yml (���� Ű��, ��й�ȣ ���� ����ִ� ����)
 src/main/resources/application-secret.yml
+
+.idea
+
+daemon
+
+caches
+wrapper
