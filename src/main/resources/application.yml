@@ -1,15 +1,22 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:mysql://localhost:3306/NEWS
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    show-sql: true
+      ddl-auto: update                         # 테이블 자동 생성 (create, update, none)
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect  # Hibernate dialect 설정
+    show-sql: true                             # SQL 쿼리 출력 여부
+    database-platform: org.hibernate.dialect.MySQL8Dialect
 
   config:
     import: application-secret.yml
+
+
+
 

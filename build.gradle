@@ -24,6 +24,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.5'
+    implementation 'mysql:mysql-connector-java:8.0.33'  // 최신 버전으로 설정
+
+
+
+
 
 
     // Lombok (optional)
@@ -32,6 +37,7 @@ dependencies {
 
     // Testing dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 
     // h2 database
     implementation 'com.h2database:h2'

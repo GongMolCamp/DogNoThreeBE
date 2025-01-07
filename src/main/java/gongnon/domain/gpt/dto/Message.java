@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {
-    private String role;
-    private String content;
-
+    private String role;    // "system", "user", "assistant"
+    private String content; // 실제 메시지 내용
 }
