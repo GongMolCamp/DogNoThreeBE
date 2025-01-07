@@ -9,6 +9,7 @@ src/main/resources/application-secret.yml
 
 .idea
 
-cache
 daemon
 wrapper
+caches
+native
