@@ -4,5 +4,10 @@
 # Ignore Gradle build output directory
 build
 
-# Ignore application-secret.yml (°¢Á¾ Å°°ª, ºñ¹Ð¹øÈ£ µîÀÌ µé¾îÀÖ´Â ÆÄÀÏ)
+# Ignore application-secret.yml (ï¿½ï¿½ï¿½ï¿½ Å°ï¿½ï¿½, ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½)
 src/main/resources/application-secret.yml
+
+.idea
+
+cache
+daemon
