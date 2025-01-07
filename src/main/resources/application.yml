@@ -3,11 +3,12 @@ spring:
     url: jdbc:mysql://localhost:3306/NEWS
     username: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 12345678
 
 
   jpa:
     hibernate:
-      ddl-auto: update                         # 테이블 자동 생성 (create, update, none)
+      ddl-auto: create                         # 테이블 자동 생성 (create, update, none)
     properties:
       hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect  # Hibernate dialect 설정

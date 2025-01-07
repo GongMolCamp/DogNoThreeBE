@@ -22,4 +22,15 @@ public class NewsArticle {
 
     @Column(length = 65535)
     private String summary;
+
+    // 기본 생성자
+    public NewsArticle() {
+    }
+
+    // 생성자
+    public NewsArticle(String title, String content, String summary) {
+        this.title = title;
+        this.content = content;
+        this.summary = summary;
+    }
 }

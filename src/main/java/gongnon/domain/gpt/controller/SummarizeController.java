@@ -1,6 +1,8 @@
 package gongnon.domain.gpt.controller;
 
 import gongnon.domain.gpt.service.SummarizeService;
+
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

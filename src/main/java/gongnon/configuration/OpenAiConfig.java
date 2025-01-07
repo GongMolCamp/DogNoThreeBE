@@ -9,7 +9,8 @@ import org.springframework.web.client.RestTemplate;
 @RefreshScope
 @Configuration
 public class OpenAiConfig {
-
+    @Value("${openai.api.key}")
+    private String openAiKey;
 
 
     /**
@@ -29,7 +30,7 @@ public class OpenAiConfig {
             System.out.println("[DEBUG] Body: " + new String(body));
 
             // 기본 인증/헤더
-            request.getHeaders().add("Authorization", "Bearer " );
+            request.getHeaders().add("Authorization", "Bearer " + openAiKey);
             request.getHeaders().set("Content-Type", "application/json");
 
             System.out.println("[DEBUG] Request Headers: " + request.getHeaders());

@@ -3,10 +3,13 @@ package gongnon.domain.gpt.service;
 import gongnon.domain.gpt.dto.ChatGPTRequest;
 import gongnon.domain.gpt.dto.ChatGPTResponse;
 import gongnon.domain.gpt.dto.Message;
+import gongnon.domain.gpt.model.NewsArticle;
+import gongnon.domain.gpt.repository.NewsArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -25,9 +28,12 @@ public class SummarizeService {
     @Qualifier("openAiRestTemplate")
     private final RestTemplate restTemplate;
 
+    private final NewsArticleRepository newsArticleRepository;
+
     /**
      * 뉴스 기사 요약 로직
      */
+    @Transactional
     public String summarize(String title, String content) {
         // 1) 프롬프트 생성
         String prompt = String.format(
@@ -47,6 +53,15 @@ public class SummarizeService {
         if (response == null || response.getChoices().isEmpty()) {
             return "GPT 응답이 없습니다.";
         }
+
+        // 5) 요약된 내용 DB에 저장
+        newsArticleRepository.save(new NewsArticle(title, content, response.getChoices().get(0).getMessage().getContent()));
+
+        // 6) 요약된 내용 조회
+        String title1 = newsArticleRepository.findById(1L).get().getTitle();
+        System.out.println("title1 = " + title1);
+        String content1 = newsArticleRepository.findById(1L).get().getContent();
+        System.out.println("content1 = " + content1);
 
         return response.getChoices().get(0).getMessage().getContent();
     }
