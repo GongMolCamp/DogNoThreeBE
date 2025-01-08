@@ -6,9 +6,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Comparator;
 // import java.util.stream.Collectors;
 
 // Spring 관련 import
+import gongnon.domain.data.repository.NewsRepository;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +22,14 @@ import org.springframework.stereotype.Service;
 // DTO 관련 import (DTO = Data Transfer Object)
 import gongnon.domain.data.dto.NewsArticleDto; // 뉴스 기사 표한하기 위한 DTO(뉴스 제목, 링크, 설명 등등 저장하는 클래스)
 import gongnon.domain.data.dto.NewsResponseDto; // 여러 개의 뉴스 기사 감싸서 반환하기 위한 DTO
+import gongnon.domain.data.model.NewsArticle;
+import gongnon.domain.data.repository.NewsRepository;
+
 // Lombok 관련 import
 import lombok.RequiredArgsConstructor;
 // Spring 관련 import
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpHeaders;
 
@@ -42,7 +51,9 @@ public class NewsRetrievalService {
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final NewsRepository NewsRepository;
 
+    @Transactional
     public NewsResponseDto getTodayEconomyNews(String query) {
         String url = baseUrl + "?query=" + query + "&display=10&sort=date";
 
@@ -68,7 +79,7 @@ public class NewsRetrievalService {
 
             List<NewsArticleDto> articles = objectMapper.convertValue(itemsNode,
                     objectMapper.getTypeFactory().constructCollectionType(List.class, NewsArticleDto.class));
-
+            articles.forEach(this::scrapArticleAndSaveToDB);
             return new NewsResponseDto(articles);
         } catch (Exception e) {
             throw new RuntimeException("Naver News API 호출에 실패했습니다. 에러 메시지: " + e.getMessage());
@@ -77,7 +88,7 @@ public class NewsRetrievalService {
 
     public NewsResponseDto getWeeklyEconomyNews(String query) {
         // 일주일치 뉴스를 받아야하니 넉넉하게 100개 받아오기
-        String url = baseUrl + "?query=" + query + "&display=100&sort=date";
+        String url = baseUrl + "?query=" + query + "&display=20&sort=date";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Naver-Client-Id", clientId);
@@ -118,6 +129,7 @@ public class NewsRetrievalService {
                     })
                     .toList();
 
+            articles.forEach(this::scrapArticleAndSaveToDB);
             return new NewsResponseDto(includedWeekArticles);
         } catch (Exception e) {
             throw new RuntimeException("Naver News API 호출에 실패했습니다. 에러 메시지: " + e.getMessage());
@@ -150,9 +162,38 @@ public class NewsRetrievalService {
             List<NewsArticleDto> articles = objectMapper.convertValue(itemsNode,
                     objectMapper.getTypeFactory().constructCollectionType(List.class, NewsArticleDto.class));
 
+            articles.forEach(this::scrapArticleAndSaveToDB);
             return new NewsResponseDto(articles);
         } catch (Exception e) {
             throw new RuntimeException("Naver News API 호출에 실패했습니다. 에러 메시지: " + e.getMessage());
         }
     }
+
+    private void scrapArticleAndSaveToDB(NewsArticleDto articleDto) {
+        try {
+            String articleUrl = articleDto.getLink();
+            Document naverNews = Jsoup.connect(articleUrl).get();
+            Element articleBody = naverNews.selectFirst("#newsct_article");
+
+            if (articleBody != null) {
+                articleDto.setDescription(articleBody.text()); // 본문 저장
+            } else {
+                articleDto.setDescription("기사 본문을 가져오는데 실패하였습니다."); // 실패 메시지 저장
+            }
+
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+            LocalDateTime pubDate = LocalDateTime.parse(articleDto.getPubDate(), dateTimeFormatter);
+            NewsArticle newsArticle = new NewsArticle(
+                    articleDto.getTitle(),
+                    articleDto.getLink(),
+                    articleDto.getDescription(),
+                    pubDate
+            );
+            NewsRepository.save(newsArticle);
+        } catch (Exception e) {
+            articleDto.setDescription("크롤링 중 오류 발생: " + e.getMessage()); // 오류 메시지 저장
+        }
+    }
 }
+
+
