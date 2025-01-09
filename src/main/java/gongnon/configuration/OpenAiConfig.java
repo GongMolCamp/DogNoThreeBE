@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 @RefreshScope
 @Configuration
 public class OpenAiConfig {
-    @Value("${openai.api.key}")
+    @Value("${openai.api.key1}")
     private String openAiKey;
 
 

@@ -20,8 +20,17 @@ public class SummarizeController {
      * ex) GET /bot/summarize?title=뉴스제목&content=뉴스본문
      */
     @GetMapping("/summarize")
-    public String summarize(@RequestParam String title,
-                            @RequestParam String content) {
-        return summarizeService.summarize(title, content);
+    public String summarize(@RequestParam(required = false) Long id,
+                            @RequestParam(required = false) String title,
+                            @RequestParam(required = false) String content) {
+        if (id != null) {
+            return summarizeService.summarize(id);
+        }
+        else if (title != null && content != null){
+            return summarizeService.summarize(title, content);
+        }
+        throw new IllegalArgumentException("id 또는 title과 content 중 하나는 필수입니다.");
+
+
     }
 }
