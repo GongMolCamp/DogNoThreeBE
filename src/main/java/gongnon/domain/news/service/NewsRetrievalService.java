@@ -22,7 +22,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import org.apache.commons.text.StringEscapeUtils;
+
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +46,7 @@ public class NewsRetrievalService {
      */
     @Transactional
     public NewsResponseDto getTodayEconomyNews(String query) {
-        return fetchNews(query, 10);
+        return fetchNews(query, 5);
     }
 
     /**
@@ -73,9 +75,6 @@ public class NewsRetrievalService {
                 objectMapper.getTypeFactory().constructCollectionType(List.class, NewsArticleDto.class)
             );
 
-            // 4) 각 기사 본문 크롤링 & DB 저장
-            articles.forEach(this::scrapArticleAndSaveToDB);
-
             return new NewsResponseDto(articles);
 
         } catch (Exception e) {
@@ -88,10 +87,10 @@ public class NewsRetrievalService {
      */
     public NewsArticle scrapArticleAndSaveToDB(NewsArticleDto articleDto) {
         try {
-            // (a) 기사 URL
+            // (1) 기사 URL
             String articleUrl = convertToPcUrlIfMobile(articleDto.getLink());
 
-            // (b) Jsoup 연결
+            // (2) Jsoup 연결
             Connection connection = Jsoup.connect(articleUrl)
                 .userAgent("Mozilla/5.0")
                 .referrer("https://news.naver.com")
@@ -100,10 +99,8 @@ public class NewsRetrievalService {
                 .followRedirects(true)
                 .maxBodySize(0);
 
-            // (c) HTML 파싱
+            // (3) HTML 파싱 및 본문 추출 (여러 Selector 시도)
             Document document = connection.get();
-
-            // (d) 본문 추출 (여러 Selector 시도)
             String[] selectors = { "div#newsct_article", "article#dic_area", "div#dic_area", "div#contents" };
             Element articleBody = null;
             for (String sel : selectors) {
@@ -111,7 +108,11 @@ public class NewsRetrievalService {
                 if (articleBody != null) break;
             }
 
-            // (e) fullContent 만들기
+            // (4) 제목 정리
+            String cleanTitle = sanitizeTitle(articleDto.getTitle());
+            articleDto.setTitle(cleanTitle);
+
+            // (5) fullContent 만들기
             String fullContent = "본문을 가져올 수 없습니다.";
             if (articleBody != null) {
                 // <p> 태그 기준으로 합치되, <br>은 개행으로 치환
@@ -131,13 +132,16 @@ public class NewsRetrievalService {
                 }
             }
 
-            // (f) 본문을 DTO에 담음
+            // (6) 본문을 DTO에 담음
             articleDto.setDescription(fullContent);
 
-            // (g) pubDate → LocalDateTime 변환
+            // (7) pubDate → LocalDateTime 변환
             LocalDateTime pubDate = parseDate(articleDto.getPubDate());
 
-            // (h) DB 저장
+            // (8) DB 저장
+            if (Objects.equals(articleDto.getDescription(), "본문을 가져올 수 없습니다.")) {
+                return null;
+            }
             NewsArticle newsArticle = new NewsArticle(
                 articleDto.getTitle(),          // 제목
                 articleDto.getLink(),           // 링크
@@ -145,12 +149,22 @@ public class NewsRetrievalService {
                 pubDate
             );
             newsRepository.save(newsArticle);
-
             return newsArticle;
-
         } catch (Exception e) {
             throw new RuntimeException("크롤링/DB저장 실패: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * 제목 정리 (HTML 태그 제거, HTML 엔티티 디코딩)
+     */
+    private String sanitizeTitle(String rawTitle) {
+        if (rawTitle == null) return "";
+        // (1) HTML 태그 제거
+        String noHtml = Jsoup.parse(rawTitle).text();
+        // (2) HTML 엔티티(&quot; 등) 디코딩
+        String cleanTitle = StringEscapeUtils.unescapeHtml4(noHtml);
+        return cleanTitle;
     }
 
     /**
@@ -160,7 +174,6 @@ public class NewsRetrievalService {
         if (url.contains("m.news.naver.com")) {
             url = url.replace("m.news.naver.com", "news.naver.com");
         }
-        // 필요 시 추가 변환 로직
         return url;
     }
 
@@ -173,7 +186,6 @@ public class NewsRetrievalService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
             return LocalDateTime.parse(pubDateStr, formatter);
         } catch (Exception e) {
-            // 혹은 오늘 날짜로 세팅 등
             return LocalDateTime.now();
         }
     }

@@ -35,7 +35,7 @@ public class SummarizeService {
 
         // 2) 프롬프트 생성
         String prompt = String.format(
-                "기사의 제목이 \"%s\"이며 본문이 \"%s\"인 기사의 가장 중요한 내용을 1문장으로 요약해 주세요.",
+                "기사의 제목이 \"%s\"이며 본문이 \"%s\"인 기사의 내용을 이해하기 쉽게 핵심만 골라서 1문장으로 요약해주세요. 단, 존댓말을 사용해주세요.",
                 article.getTitle(), article.getDescription()
         );
 

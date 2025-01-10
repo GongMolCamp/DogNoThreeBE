@@ -1,5 +1,7 @@
 package gongnon.domain.user.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -7,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import gongnon.domain.sms.model.Message;
+import gongnon.domain.sms.repository.SmsRepository;
 import gongnon.domain.user.model.User;
 import gongnon.domain.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -17,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PageController {
 	private final UserService userService;
+	private final SmsRepository smsRepository;
 
 	@GetMapping("/")
 	public String homePage(Model model) {
@@ -48,12 +53,16 @@ public class PageController {
 	public String myPage(Model model, HttpSession session) {
 		User loggedInUser = (User) session.getAttribute("loggedInUser");
 		if (loggedInUser != null) {
-			// 세션에 저장해두었던 user 객체를 모델에 바인딩
+			// 세션에 저장된 유저 정보를 모델에 추가
 			model.addAttribute("user", loggedInUser);
+
+			// 현재 유저의 메시지 기록 조회 및 모델에 추가
+			List<Message> messages = smsRepository.findByUser(loggedInUser);
+			model.addAttribute("messages", messages);
+
 			return "mypage"; // -> resources/templates/mypage.html
 		} else {
-			// 로그인 안 된 경우 홈으로 리다이렉트
-			return "redirect:/";
+			return "redirect:/"; // 로그인 안 된 경우 홈으로 리다이렉트
 		}
 	}
 }

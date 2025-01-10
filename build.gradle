@@ -45,6 +45,7 @@ dependencies {
 
     // jsoup
     implementation 'org.jsoup:jsoup:1.16.1'
+    implementation 'org.apache.commons:commons-text:1.10.0'
 
     // 로그인, 회원가입
     implementation 'org.springframework.boot:spring-boot-starter-security'

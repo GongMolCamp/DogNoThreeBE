@@ -8,7 +8,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #ffffff; /* 배경 흰색 */
+            background-color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -26,10 +26,10 @@
 
         .user-info {
             width: 30%;
-            background: #f8f9fa; /* 살짝 회색 배경 */
+            background: #f8f9fa;
             padding: 20px;
             box-shadow: inset -2px 0 10px rgba(0, 0, 0, 0.05);
-            text-align: center; /* 글자 중앙 정렬 */
+            text-align: center;
         }
 
         .user-info h2 {
@@ -51,7 +51,7 @@
         .button-container button {
             padding: 10px 20px;
             font-size: 1em;
-            background-color: #007bff; /* 파란색 버튼 */
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
@@ -121,12 +121,15 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             overflow: hidden;
+            table-layout: fixed;
         }
 
+        /* 모든 셀 가운데 정렬 */
         th, td {
+            text-align: center;
             padding: 12px;
             border: 1px solid #ddd;
-            text-align: center; /* 테이블 내용 중앙 정렬 */
+            word-wrap: break-word;
         }
 
         th {
@@ -134,22 +137,63 @@
             color: white;
         }
 
-        td {
-            color: #333;
+        th:nth-child(1), td:nth-child(1) {
+            width: 15%;
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+            width: 10%;
+        }
+
+        th:nth-child(3), td:nth-child(3) {
+            width: 60%;
+        }
+
+        th:nth-child(4), td:nth-child(4) {
+            width: 15%;
+        }
+
+        .news-content {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            /* 기본 3줄 정도까지만 보이도록 설정 */
+            max-height: 4.5em;
+            line-height: 1.5em;
+            transition: max-height 0.3s ease;
+        }
+
+        .more-button {
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- 왼쪽 사용자 정보 섹션 -->
     <div class="user-info">
         <h2>내 정보</h2>
-        <p><strong>아이디(Username):</strong> <span th:text="${user.username}">기본아이디</span></p>
-        <p><strong>이름:</strong> <span th:text="${user.name}">홍길동</span></p>
-        <p><strong>전화번호:</strong> <span th:text="${user.phone}">010-1234-5678</span></p>
-        <p><strong>뉴스 취향:</strong> <span th:text="${user.newsPreference}">IT, 경제</span></p>
-        <p><strong>알림 시간대:</strong> <span th:text="${user.notificationTime}">08:00</span></p>
+        <p><strong>아이디(Username):</strong>
+            <span th:text="${user.username}">기본아이디</span>
+        </p>
+        <p><strong>이름:</strong>
+            <span th:text="${user.name}">홍길동</span>
+        </p>
+        <p><strong>전화번호:</strong>
+            <span th:text="${user.phone}">010-1234-5678</span>
+        </p>
+        <p><strong>뉴스 취향:</strong>
+            <span th:text="${user.newsPreference}">IT, 경제</span>
+        </p>
+        <p><strong>알림 시간대:</strong>
+            <span th:text="${user.notificationTime}">08:00</span>
+        </p>
 
         <div class="button-container">
             <button onclick="toggleEditForm()">정보 수정</button>
@@ -161,18 +205,19 @@
             <form th:action="@{/updatePreferencesForm}" method="post">
                 <div>
                     <label for="newsPreference">뉴스 취향</label>
-                    <input type="text" id="newsPreference" name="newsPreference" th:value="${user.newsPreference}" />
+                    <input type="text" id="newsPreference" name="newsPreference"
+                           th:value="${user.newsPreference}" />
                 </div>
                 <div>
                     <label for="notificationTime">알림 시간</label>
-                    <input type="text" id="notificationTime" name="notificationTime" placeholder="예: 08:00" th:value="${user.notificationTime}" />
+                    <input type="text" id="notificationTime" name="notificationTime"
+                           placeholder="예: 08:00" th:value="${user.notificationTime}" />
                 </div>
                 <button type="submit">수정 완료</button>
             </form>
         </div>
     </div>
 
-    <!-- 오른쪽 메시지 기록 테이블 -->
     <div class="message-history">
         <h2>보낸 메시지 기록</h2>
         <table>
@@ -185,16 +230,23 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>2025-01-10</td>
-                <td>08:00</td>
-                <td>오늘의 IT 뉴스 요약...</td>
-                <td>성공</td>
-            </tr>
-            <tr>
-                <td>2025-01-09</td>
-                <td>08:00</td>
-                <td>경제 뉴스 요약...</td>
+            <tr th:each="message : ${messages}">
+                <!-- 날짜, 시간 -->
+                <td th:text="${#strings.substring(message.sentAt, 0, 10)}"></td>
+                <td th:text="${#strings.substring(message.sentAt, 11, 16)}"></td>
+
+                <td>
+                    <!-- div ID를 "content-메시지ID" 로 설정 -->
+                    <div class="news-content"
+                         th:id="'content-' + ${message.id}"
+                         th:text="${message.content}">
+                    </div>
+                    <!-- data-id 역시 메시지ID 로 설정 -->
+                    <span class="more-button"
+                          th:attr="data-id=${message.id}"
+                          onclick="toggleContent(this)">더보기
+                    </span>
+                </td>
                 <td>성공</td>
             </tr>
             </tbody>
@@ -205,7 +257,7 @@
 <script>
     function toggleEditForm() {
         const form = document.getElementById('editForm');
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        form.style.display = (form.style.display === 'none') ? 'block' : 'none';
     }
 
     function logout() {
@@ -219,6 +271,29 @@
                 alert('로그아웃 실패!');
             }
         }).catch(error => console.error('로그아웃 오류:', error));
+    }
+
+    function toggleContent(button) {
+        const id = button.getAttribute('data-id');
+        console.log('[toggleContent] data-id =', id);
+
+        const content = document.getElementById('content-' + id);
+        console.log('[toggleContent] found content:', content);
+
+        if (!content) {
+            alert('오류: content-' + id + ' 요소를 찾을 수 없습니다!');
+            return;
+        }
+
+        // 이미 펼쳐진 상태라면 접기
+        if (content.style.maxHeight && content.style.maxHeight !== '4.5em') {
+            content.style.maxHeight = '4.5em';
+            button.innerText = '더보기';
+        } else {
+            // 펼치기
+            content.style.maxHeight = content.scrollHeight + 'px';
+            button.innerText = '접기';
+        }
     }
 </script>
 

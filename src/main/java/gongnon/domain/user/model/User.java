@@ -1,11 +1,14 @@
 package gongnon.domain.user.model;
 
+import gongnon.domain.sms.model.Message;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "users")  // 필요 시 원하는 테이블명 지정
+@Table(name = "users")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +31,9 @@ public class User {
 
 	@Column(nullable = false)
 	private String notificationTime;
+
+	// User와 Message의 1:N 관계 매핑
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@ToString.Exclude
+	private List<Message> messages;
 }
