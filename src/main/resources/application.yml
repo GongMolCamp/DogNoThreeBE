@@ -1,17 +1,16 @@
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: update # 테이블 자동 생성 (create, update, none)
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect  # Hibernate dialect 설정
+    show-sql: true                             # SQL 쿼리 출력 여부
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
   config:
     import: application-secret.yml
 
-  datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password: password
-    driver-class-name: org.h2.Driver
 
-  jpa:
-     hibernate:
-       ddl-auto: update
-     show-sql: true
-     database-platform: org.hibernate.dialect.H2Dialect
 
 
