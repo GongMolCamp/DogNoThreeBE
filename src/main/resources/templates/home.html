@@ -1,22 +1,229 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <title>Spring Boot + Thymeleaf</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/script.js" defer></script>
+    <title>3D Logo with Overlay</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .main-container {
+            text-align: center;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .logo-container {
+            border-radius: 10px;
+
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+
+            /* 3D 효과 */
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transform-origin: center center;
+
+            /* 이미지가 컨테이너 밖으로 넘어가지 않도록 */
+            overflow: hidden;
+        }
+
+        .logo {
+            /* 가운데 정렬 (컨테이너의 50%, 50% 위치로 이동) */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(0);
+
+            /* 세로를 100% 맞추고, 가로는 자동 비율 */
+            height: 100%;
+            width: auto;
+
+            object-fit: cover;
+            object-position: center;
+            z-index: 1;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            /* 빛이 지나가는 그라디언트 애니메이션 */
+            background: linear-gradient(
+                    105deg,
+                    transparent 40%,
+                    rgba(255, 219, 112, 0.8) 45%,
+                    rgba(132, 50, 255, 0.6) 50%,
+                    transparent 54%
+            );
+            background-size: 150% 150%;
+            animation: overlayAnimation 5s infinite alternate;
+
+            /* 이미지를 위에서 덮으며 번쩍이게 하려면 z-index를 더 크게 */
+            z-index: 2;
+
+            /* 마우스가 없을 때 기본 상태 (어느 정도 번쩍이도록) */
+            filter: brightness(1.2) opacity(0.8);
+
+            /* blend-mode로 이미지와 합성 */
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes overlayAnimation {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 50% 50%;
+            }
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .login-form input {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-form button {
+            width: calc(50% - 5px); /* 버튼 너비를 50%로 나누고, 간격 추가 */
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-form button:first-child {
+            margin-right: 10px; /* 로그인 버튼 오른쪽 간격 */
+        }
+
+        .login-form button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px; /* 버튼 간격 */
+        }
+
+        .button-container button {
+            flex: 1; /* 버튼 크기 동일하게 설정 */
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <img src="/images/개노삼 로고.jpg" alt="Logo" class="logo">
-    <h1 th:text="'안녕하세요!: ' + ${message}"></h1>
+<div class="main-container">
+    <h1>
+        [ 개노삼 ] <br>
+        최신 뉴스 요약 플랫폼
+    </h1>
+    <div class="logo-container">
+        <!-- 로고 이미지 먼저 -->
+        <img src="/images/개노삼 로고.jpg" alt="Logo" class="logo">
+        <!-- 번쩍이는 overlay가 위로 올라오도록 -->
+        <div class="overlay"></div>
+    </div>
     <form action="/login" method="post" class="login-form">
         <input type="text" name="username" placeholder="아이디" required>
         <input type="password" name="password" placeholder="비밀번호" required>
-        <button type="submit">로그인</button>
+        <div class="button-container">
+            <button type="button" onclick="login()">로그인</button>
+            <button type="button" onclick="window.location.href='/register'">회원가입</button>
+        </div>
     </form>
     <footer>
         <p>Copyright © 2025 개노삼. All rights reserved.</p>
     </footer>
 </div>
+
+<script>
+    var logoContainer = document.querySelector('.logo-container');
+    var overlay = document.querySelector('.overlay');
+
+    logoContainer.addEventListener('mousemove', function(e) {
+        var rect = logoContainer.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+
+        var rotateY = (-1 / 5) * x + 20;
+        var rotateX = (4 / 30) * y - 20;
+
+        // 마우스 위치에 따라 3D 회전
+        logoContainer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+        // 마우스가 올라온 상태에서 overlay를 더 밝게 (번쩍임 강화)
+        overlay.style.filter = 'brightness(1.5) opacity(1)';
+    });
+
+    logoContainer.addEventListener('mouseout', function() {
+        // 회전 원점으로 복원
+        logoContainer.style.transform = 'rotateX(0deg) rotateY(0deg)';
+
+        // 마우스가 나가면 기본 수준으로 되돌림
+        overlay.style.filter = 'brightness(1.2) opacity(0.8)';
+    });
+
+    function login() {
+        const username = document.querySelector('input[name="username"]').value;
+        const password = document.querySelector('input[name="password"]').value;
+
+        fetch('/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('로그인 성공!');
+                    window.location.href = '/'; // 로그인 성공 시 메인 페이지로 이동
+                } else {
+                    alert('로그인 실패: 아이디 또는 비밀번호를 확인하세요.');
+                }
+            })
+            .catch(error => console.error('로그인 오류:', error));
+    }
+</script>
 </body>
 </html>
