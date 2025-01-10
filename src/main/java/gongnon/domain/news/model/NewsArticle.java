@@ -14,32 +14,27 @@ import java.time.LocalDateTime;
 @Table(name = "news_article")
 public class NewsArticle {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private String title;
+    private String title;
 
-	private String link;
+    private String newsLink;
 
-	@Column(length = 1000)
-	private String description;
+    @Column(length = 1000)
+    private String description;
 
-	private LocalDateTime pubDate;
+    private String summary;
 
-	private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime publicatedDate;
 
-	private String summary;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-	public NewsArticle(String title, String link, String description, LocalDateTime pubDate, String summary) {
-		this.title = title;
-		this.link = link;
-		this.description = description;
-		this.pubDate = pubDate;
-	}
-
-	public NewsArticle(String title, String description) {
-		this.title = title;
-		this.description = description;
-	}
+    public NewsArticle(String title, String newsLink, String description, LocalDateTime publicatedDate) {
+        this.title = title;
+        this.newsLink = newsLink;
+        this.description = description;
+        this.publicatedDate = publicatedDate;
+    }
 }

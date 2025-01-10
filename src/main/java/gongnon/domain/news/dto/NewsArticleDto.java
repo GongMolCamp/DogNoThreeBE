@@ -1,10 +1,12 @@
 package gongnon.domain.news.dto;
 
-import lombok.Builder;
+import lombok.Data;
 
-@Builder
-public record NewsArticleDto(
-	String title,
-	String description
-) {
+@Data
+public class NewsArticleDto {
+    private String title;
+    private String originallink;
+    private String link;
+    private String description;
+    private String pubDate;
 }

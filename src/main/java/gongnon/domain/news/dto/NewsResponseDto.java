@@ -1,4 +1,4 @@
-package gongnon.domain.data.dto;
+package gongnon.domain.news.dto;
 
 import java.util.List;
 

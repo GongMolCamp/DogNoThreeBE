@@ -1,17 +1,16 @@
 // 패키지 선언
-package gongnon.domain.data.service;
+package gongnon.domain.news.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
-import java.util.ArrayList;
 
-import gongnon.domain.data.dto.NewsArticleDto;
-import gongnon.domain.data.dto.NewsResponseDto;
-import gongnon.domain.data.model.NewsArticle;
-import gongnon.domain.data.repository.NewsRepository;
+import gongnon.domain.news.dto.NewsArticleDto;
+import gongnon.domain.news.dto.NewsResponseDto;
+import gongnon.domain.news.model.NewsArticle;
+import gongnon.domain.news.repository.NewsRepository;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

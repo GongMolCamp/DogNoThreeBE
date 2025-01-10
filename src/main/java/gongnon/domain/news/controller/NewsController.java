@@ -1,11 +1,11 @@
-package gongnon.domain.data.controller;
+package gongnon.domain.news.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import gongnon.domain.data.dto.NewsResponseDto;
-import gongnon.domain.data.service.NewsRetrievalService;
+import gongnon.domain.news.dto.NewsResponseDto;
+import gongnon.domain.news.service.NewsRetrievalService;
 import lombok.RequiredArgsConstructor;
 
 @RestController

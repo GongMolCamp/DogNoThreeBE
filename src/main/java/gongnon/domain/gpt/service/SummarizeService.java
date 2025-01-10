@@ -4,7 +4,7 @@ import gongnon.domain.gpt.dto.ChatGPTRequest;
 import gongnon.domain.gpt.dto.ChatGPTResponse;
 import gongnon.domain.gpt.dto.Message;
 import gongnon.domain.news.model.NewsArticle;
-import gongnon.domain.news.repository.NewsArticleRepository;
+import gongnon.domain.news.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,7 +26,7 @@ public class SummarizeService {
     // "openAiRestTemplate"로 주입받아야 Authorization 헤더가 자동으로 붙음
     @Qualifier("openAiRestTemplate")
     private final RestTemplate restTemplate;
-    private final NewsArticleRepository newsArticleRepository;
+    private final NewsRepository newsArticleRepository;
 
     @Transactional
     public String summarize(Long id) {
