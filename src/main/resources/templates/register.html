@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>회원가입</title>
     <style>
         /* 전체 화면 배경과 폰트 설정 */
@@ -47,7 +47,7 @@
         button {
             width: 100%;
             padding: 10px;
-            background-color: #4CAF50;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
@@ -57,7 +57,7 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -66,9 +66,27 @@
     <h1>회원가입</h1>
     <!-- 회원가입 후 PageController를 통해 성공 시 메인("/") 페이지로 이동 -->
     <form action="/register" method="post">
-        <input type="text" name="username" placeholder="아이디" required>
-        <input type="password" name="password" placeholder="비밀번호" required>
-        <button type="submit">회원가입</button>
+        <!-- 기존 필드들 -->
+        <input type="text" name="username" placeholder="아이디" required />
+        <input type="password" name="password" placeholder="비밀번호" required />
+
+        <!-- 새로 추가: 이름 -->
+        <input type="text" name="name" placeholder="이름" required />
+
+        <!-- 새로 추가: 전화번호 (010-1234-5678) 형식 유효성 검사 -->
+        <input type="text" name="phone"
+               placeholder="전화번호 (예: 010-1234-5678)"
+               pattern="^010-\d{4}-\d{4}$"
+               title="전화번호는 010-1234-5678 형태로 입력해주세요."
+               required />
+
+        <!-- 새로 추가: 뉴스 취향 -->
+        <input type="text" name="newsPreference" placeholder="뉴스 취향 (예: IT, 경제)" required />
+
+        <!-- 새로 추가 : 알림 시간대 -->
+        <input type="text" name="notificationTime" placeholder="알림 시간대 (예: 09:00)" required />
+
+        <button type="submit">등록하기</button>
     </form>
 </div>
 </body>

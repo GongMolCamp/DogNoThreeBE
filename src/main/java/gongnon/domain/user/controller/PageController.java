@@ -2,6 +2,7 @@ package gongnon.domain.user.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import gongnon.domain.user.model.User;
 import gongnon.domain.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -28,9 +30,17 @@ public class PageController {
 	}
 
 	@PostMapping("/register")
-	public ModelAndView register(User user) {
+	public ModelAndView register(
+		@Valid User user,        // User 객체에 대한 검증(@NotBlank, @Pattern 등)을 수행
+		BindingResult bindingResult
+	) {
+		if (bindingResult.hasErrors()) {
+			// 유효성 검증 실패 시, 회원가입 폼으로 다시 보냄
+			// 또는 에러 메시지를 모델에 담아 재표출하는 등 처리
+			return new ModelAndView("register");
+		}
+
 		userService.registerUser(user); // 회원가입 처리
-		// 회원가입 완료 후 home.html 로 이동
 		return new ModelAndView("redirect:/");
 	}
 
@@ -38,8 +48,9 @@ public class PageController {
 	public String myPage(Model model, HttpSession session) {
 		User loggedInUser = (User) session.getAttribute("loggedInUser");
 		if (loggedInUser != null) {
+			// 세션에 저장해두었던 user 객체를 모델에 바인딩
 			model.addAttribute("user", loggedInUser);
-			return "mypage"; // resources/templates/mypage.html
+			return "mypage"; // -> resources/templates/mypage.html
 		} else {
 			// 로그인 안 된 경우 홈으로 리다이렉트
 			return "redirect:/";
