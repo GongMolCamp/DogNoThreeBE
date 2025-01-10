@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
 	@Autowired
 	private UserService userService;
 
@@ -28,19 +29,9 @@ public class UserController {
 		}
 	}
 
-	@GetMapping("/profile")
-	public ResponseEntity<User> getUserProfile(HttpSession session) {
-		User loggedInUser = (User) session.getAttribute("loggedInUser");
-		if (loggedInUser != null) {
-			return ResponseEntity.ok(loggedInUser);
-		} else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}
-	}
-
 	@PostMapping("/logout")
 	public ResponseEntity<String> logout(HttpSession session) {
-		session.invalidate();
+		session.invalidate(); // 세션 무효화
 		return ResponseEntity.ok("로그아웃 성공!");
 	}
 }

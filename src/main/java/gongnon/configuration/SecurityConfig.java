@@ -18,10 +18,12 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.csrf(csrf -> csrf.disable()) // CSRF 보호 비활성화
+			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/", "/register", "/api/users/**", "/css/**", "/js/**", "/images/**").permitAll()
-				.requestMatchers("/api/users/register").permitAll()
+				// 홈, 회원가입 페이지, 회원가입 처리, 정적 리소스 등은 익명 접근 허용
+				.requestMatchers(
+					"/**").permitAll()
+				// 필요하다면, "/mypage"도 로그인 없이 접근할지 여부에 따라 열거나 막을 수 있음
 				.anyRequest().authenticated()
 			)
 			.httpBasic(httpBasic -> httpBasic.disable())

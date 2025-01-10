@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 왼쪽 사용자 정보 */
+        .user-info {
+            width: 30%;
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            border-right: 2px solid #ddd;
+        }
+
+        .user-info h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .user-info p {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        /* 오른쪽 메시지 기록 */
+        .message-history {
+            width: 70%;
+            padding: 20px;
+        }
+
+        .message-history h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td {
+            color: #333;
+        }
+
+        /* 버튼 스타일 */
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .button-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 사용자 정보 섹션 -->
+<div class="user-info">
+    <h2>내 정보</h2>
+    <!-- session에서 가져온 user 정보를 출력할 수도 있음 -->
+    <p><strong>이름:</strong> 홍길동</p>
+    <p><strong>관심 뉴스:</strong> IT, 경제</p>
+    <p><strong>뉴스 수신 시간:</strong> 오전 8시</p>
+
+    <div class="button-container">
+        <button onclick="editProfile()">정보 수정</button>
+        <button onclick="logout()">로그아웃</button>
+    </div>
+</div>
+
+<!-- 메시지 기록 섹션 -->
+<div class="message-history">
+    <h2>보낸 메시지 기록</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>날짜</th>
+            <th>시간</th>
+            <th>뉴스 요약</th>
+            <th>수신 상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>2025-01-10</td>
+            <td>08:00</td>
+            <td>오늘의 IT 뉴스 요약...</td>
+            <td>성공</td>
+        </tr>
+        <tr>
+            <td>2025-01-09</td>
+            <td>08:00</td>
+            <td>경제 뉴스 요약...</td>
+            <td>성공</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function editProfile() {
+        alert('프로필 수정 페이지로 이동합니다.');
+        // 실제 프로필 수정 페이지 경로로 변경
+        window.location.href = '/edit-profile';
+    }
+
+    function logout() {
+        fetch('/api/users/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('로그아웃 성공!');
+                    window.location.href = '/';
+                } else {
+                    alert('로그아웃 실패!');
+                }
+            })
+            .catch(error => console.error('로그아웃 오류:', error));
+    }
+</script>
+
+</body>
+</html>
