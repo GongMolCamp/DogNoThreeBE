@@ -26,10 +26,8 @@ dependencies {
     implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.5'
     implementation 'mysql:mysql-connector-java:8.0.33'  // 최신 버전으로 설정
 
-
-
-
-
+    // coolSMS
+    implementation 'net.nurigo:sdk:4.3.2'
 
     // Lombok (optional)
     compileOnly 'org.projectlombok:lombok'
