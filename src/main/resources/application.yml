@@ -1,8 +1,4 @@
 spring:
-  redis:
-    host: localhost
-    port: 6379
-
   config:
     import: application-secret.yml
 
