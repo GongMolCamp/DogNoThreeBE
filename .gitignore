@@ -4,5 +4,13 @@
 # Ignore Gradle build output directory
 build
 
-# Ignore application-secret.yml (각종 키값, 비밀번호 등이 들어있는 파일)
+# Ignore application-secret.yml
 src/main/resources/application-secret.yml
+
+.idea
+
+daemon
+
+caches
+wrapper
+native
