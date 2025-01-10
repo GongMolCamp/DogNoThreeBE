@@ -29,6 +29,9 @@ dependencies {
     // coolSMS
     implementation 'net.nurigo:sdk:4.3.2'
 
+    // Jsoup
+    implementation 'org.jsoup:jsoup:1.15.3'
+
     // Lombok (optional)
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
