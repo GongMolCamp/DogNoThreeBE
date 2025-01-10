@@ -5,177 +5,220 @@
     <title>마이페이지</title>
     <style>
         body {
-            margin: 0; padding: 0;
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex; height: 100vh;
+            background-color: #ffffff; /* 배경 흰색 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            width: 90%;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
         .user-info {
-            width: 30%; background: #ffffff;
-            padding: 20px; box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            border-right: 2px solid #ddd;
+            width: 30%;
+            background: #f8f9fa; /* 살짝 회색 배경 */
+            padding: 20px;
+            box-shadow: inset -2px 0 10px rgba(0, 0, 0, 0.05);
+            text-align: center; /* 글자 중앙 정렬 */
         }
-        .user-info h2 { margin-bottom: 20px; color: #333; }
-        .user-info p { margin-bottom: 10px; font-size: 1.1em; color: #555; }
-        .message-history {
-            width: 70%; padding: 20px;
+
+        .user-info h2 {
+            margin-bottom: 20px;
+            color: #333;
         }
-        .message-history h2 { margin-bottom: 20px; color: #333; }
-        table {
-            width: 100%; border-collapse: collapse; background: #ffffff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+        .user-info p {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #555;
         }
-        th, td {
-            padding: 12px; border: 1px solid #ddd; text-align: center;
-        }
-        th {
-            background-color: #4CAF50; color: white;
-        }
-        td { color: #333; }
 
         .button-container {
-            margin-top: 20px; text-align: center;
+            margin-top: 20px;
+            text-align: center;
         }
+
         .button-container button {
-            padding: 10px 20px; font-size: 1em; background-color: #007bff;
-            color: white; border: none; border-radius: 5px; cursor: pointer;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #007bff; /* 파란색 버튼 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             margin-right: 10px;
+            transition: background 0.3s;
         }
+
         .button-container button:hover {
             background-color: #0056b3;
         }
 
-        /* 폼 스타일 */
         .edit-preferences-form {
             margin-top: 20px;
-            background: #fff; padding: 15px;
-            border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
+
         .edit-preferences-form label {
-            display: inline-block; width: 120px; text-align: left;
-            margin-bottom: 5px; font-weight: bold;
+            display: inline-block;
+            width: 120px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            text-align: left;
         }
+
         .edit-preferences-form input {
             width: calc(100% - 130px);
-            margin-bottom: 10px; padding: 8px; border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
             border-radius: 4px;
         }
+
         .edit-preferences-form button {
-            margin-top: 10px; padding: 8px 16px;
-            background-color: #007bff; color: #fff; border: none;
-            border-radius: 4px; cursor: pointer;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
+
         .edit-preferences-form button:hover {
             background-color: #0056b3;
+        }
+
+        .message-history {
+            width: 70%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .message-history h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center; /* 테이블 내용 중앙 정렬 */
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        td {
+            color: #333;
         }
     </style>
 </head>
 <body>
 
-<!-- 왼쪽 사용자 정보 섹션 -->
-<div class="user-info">
-    <h2>내 정보</h2>
-    <p>
-        <strong>아이디(Username):</strong>
-        <span th:text="${user.username}">기본아이디</span>
-    </p>
-    <p>
-        <strong>이름:</strong>
-        <span th:text="${user.name}">홍길동</span>
-    </p>
-    <p>
-        <strong>전화번호:</strong>
-        <span th:text="${user.phone}">010-1234-5678</span>
-    </p>
-    <p>
-        <strong>뉴스 취향:</strong>
-        <span th:text="${user.newsPreference}">IT, 경제</span>
-    </p>
-    <p>
-        <strong>알림 시간대:</strong>
-        <span th:text="${user.notificationTime}">08:00</span>
-    </p>
+<div class="container">
+    <!-- 왼쪽 사용자 정보 섹션 -->
+    <div class="user-info">
+        <h2>내 정보</h2>
+        <p><strong>아이디(Username):</strong> <span th:text="${user.username}">기본아이디</span></p>
+        <p><strong>이름:</strong> <span th:text="${user.name}">홍길동</span></p>
+        <p><strong>전화번호:</strong> <span th:text="${user.phone}">010-1234-5678</span></p>
+        <p><strong>뉴스 취향:</strong> <span th:text="${user.newsPreference}">IT, 경제</span></p>
+        <p><strong>알림 시간대:</strong> <span th:text="${user.notificationTime}">08:00</span></p>
 
-    <div class="button-container">
-        <button onclick="toggleEditForm()">정보 수정</button>
-        <button onclick="logout()">로그아웃</button>
+        <div class="button-container">
+            <button onclick="toggleEditForm()">정보 수정</button>
+            <button onclick="logout()">로그아웃</button>
+        </div>
+
+        <div class="edit-preferences-form" id="editForm" style="display: none;">
+            <h3>내 알림 설정 변경</h3>
+            <form th:action="@{/updatePreferencesForm}" method="post">
+                <div>
+                    <label for="newsPreference">뉴스 취향</label>
+                    <input type="text" id="newsPreference" name="newsPreference" th:value="${user.newsPreference}" />
+                </div>
+                <div>
+                    <label for="notificationTime">알림 시간</label>
+                    <input type="text" id="notificationTime" name="notificationTime" placeholder="예: 08:00" th:value="${user.notificationTime}" />
+                </div>
+                <button type="submit">수정 완료</button>
+            </form>
+        </div>
     </div>
 
-    <!-- 폼: 기본적으로 display:none으로 숨겨진 상태 -->
-    <div class="edit-preferences-form" id="editForm" style="display: none;">
-        <h3>내 알림 설정 변경</h3>
-        <!-- 전통적인 Spring MVC form 전송 -->
-        <form th:action="@{/updatePreferencesForm}" method="post">
-            <div>
-                <label for="newsPreference">뉴스 취향</label>
-                <input type="text" id="newsPreference" name="newsPreference"
-                       th:value="${user.newsPreference}"/>
-            </div>
-            <div>
-                <label for="notificationTime">알림 시간</label>
-                <input type="text" id="notificationTime" name="notificationTime"
-                       placeholder="예: 08:00"
-                       th:value="${user.notificationTime}"/>
-            </div>
-            <button type="submit">수정 완료</button>
-        </form>
+    <!-- 오른쪽 메시지 기록 테이블 -->
+    <div class="message-history">
+        <h2>보낸 메시지 기록</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>날짜</th>
+                <th>시간</th>
+                <th>뉴스 요약</th>
+                <th>수신 상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>2025-01-10</td>
+                <td>08:00</td>
+                <td>오늘의 IT 뉴스 요약...</td>
+                <td>성공</td>
+            </tr>
+            <tr>
+                <td>2025-01-09</td>
+                <td>08:00</td>
+                <td>경제 뉴스 요약...</td>
+                <td>성공</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-</div>
-
-<!-- 오른쪽: 메시지 기록 테이블 -->
-<div class="message-history">
-    <h2>보낸 메시지 기록</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>날짜</th>
-            <th>시간</th>
-            <th>뉴스 요약</th>
-            <th>수신 상태</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>2025-01-10</td>
-            <td>08:00</td>
-            <td>오늘의 IT 뉴스 요약...</td>
-            <td>성공</td>
-        </tr>
-        <tr>
-            <td>2025-01-09</td>
-            <td>08:00</td>
-            <td>경제 뉴스 요약...</td>
-            <td>성공</td>
-        </tr>
-        </tbody>
-    </table>
 </div>
 
 <script>
-    // 폼 보여주기/숨기기
     function toggleEditForm() {
-        const form = document.getElementById("editForm");
-        if (form.style.display === "none") {
-            form.style.display = "block";
-        } else {
-            form.style.display = "none";
-        }
+        const form = document.getElementById('editForm');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
     }
 
-    // 로그아웃 (기존 그대로)
     function logout() {
         fetch('/api/users/logout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-        })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = '/';
-                } else {
-                    alert('로그아웃 실패!');
-                }
-            })
-            .catch(error => console.error('로그아웃 오류:', error));
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = '/';
+            } else {
+                alert('로그아웃 실패!');
+            }
+        }).catch(error => console.error('로그아웃 오류:', error));
     }
 </script>
 
