@@ -1,8 +1,16 @@
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: update # 테이블 자동 생성 (create, update, none)
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect  # Hibernate dialect 설정
+    show-sql: true                             # SQL 쿼리 출력 여부
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
   config:
-    import:
-      - optional:application-secret.yml
-  datasource:
-    url: jdbc:mysql://localhost:3306/NEWS
-    username: root
-    password: yoon0302
+    import: application-secret.yml
+
+
+
+

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot + Thymeleaf</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/script.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <img src="/images/개노삼 로고.jpg" alt="Logo" class="logo">
+    <h1 th:text="'안녕하세요!: ' + ${message}"></h1>
+    <form action="/login" method="post" class="login-form">
+        <input type="text" name="username" placeholder="아이디" required>
+        <input type="password" name="password" placeholder="비밀번호" required>
+        <button type="submit">로그인</button>
+    </form>
+    <footer>
+        <p>Copyright © 2025 개노삼. All rights reserved.</p>
+    </footer>
+</div>
+</body>
+</html>
