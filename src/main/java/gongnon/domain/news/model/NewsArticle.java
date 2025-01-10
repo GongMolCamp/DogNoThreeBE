@@ -22,7 +22,7 @@ public class NewsArticle {
 
     private String newsLink;
 
-    @Column(length = 1000)
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String summary;

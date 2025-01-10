@@ -1,7 +1,7 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create # 테이블 자동 생성 (create, update, none)
+      ddl-auto: update # 테이블 자동 생성 (create, update, none)
     properties:
       hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect  # Hibernate dialect 설정
