@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.client.RestTemplate;
 
-@RefreshScope
 @Configuration
 public class OpenAiConfig {
     @Value("${openai.api.key1}")
