@@ -9,8 +9,12 @@ import java.util.Optional;
 
 import gongnon.domain.user.model.User;
 import gongnon.domain.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 
+@Tag(name = "User", description = "사용자 관련 API")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -19,7 +23,11 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody User user, HttpSession session) {
+	@Operation(summary = "로그인")
+	public ResponseEntity<String> login(
+		User user,
+		HttpSession session
+	) {
 		Optional<User> authenticatedUser = userService.loginUser(user.getUsername(), user.getPassword());
 		if (authenticatedUser.isPresent()) {
 			session.setAttribute("loggedInUser", authenticatedUser.get());
@@ -30,14 +38,18 @@ public class UserController {
 	}
 
 	@PostMapping("/logout")
+	@Operation(summary = "로그아웃")
 	public ResponseEntity<String> logout(HttpSession session) {
 		session.invalidate();  // 세션 무효화
 		return ResponseEntity.ok("로그아웃 성공!");
 	}
 
 	@PostMapping("/updatePreferences")
+	@Operation(summary = "사용자 설정 업데이트")
 	public ResponseEntity<String> updatePreferences(
+		@Parameter(description = "키워드", required = true, example = "경제")
 		@RequestParam String newsPreference,
+		@Parameter(description = "알림 시간", required = true, example = "09:00")
 		@RequestParam String notificationTime,
 		HttpSession session
 	) {

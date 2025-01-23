@@ -4,3 +4,10 @@ spring:
       - application-secret.yml
       - database.yml
 
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+
