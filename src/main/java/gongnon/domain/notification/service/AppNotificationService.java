@@ -23,7 +23,7 @@ public class AppNotificationService {
         // 실제로는 FCM, APNs, WebSocket 등으로 전송
         log.info("[AppNotification] Sending to {}: {}", user.getName(), message);
     }
-
+//
     /**
      * 알림 내용 DB 저장
      */

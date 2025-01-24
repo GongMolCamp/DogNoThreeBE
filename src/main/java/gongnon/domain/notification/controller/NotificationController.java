@@ -128,7 +128,7 @@ public class NotificationController {
         // 1) 유저 찾기
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없음, id=" + userId));
-
+//
         // 2) 가장 최근 알림 1개
         NotificationRecord latestRecord = notificationRecordRepository
                 .findTopByUserOrderBySentAtDesc(user);

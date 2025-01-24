@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gongnon.domain.news.dto.NewsResponseDto;
 import gongnon.domain.news.service.NewsRetrievalService;
 import lombok.RequiredArgsConstructor;
-
+//
 @RestController
 @RequiredArgsConstructor
 public class NewsController {

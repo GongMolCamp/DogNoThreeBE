@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "news_article")
 public class NewsArticle {
-
+//
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

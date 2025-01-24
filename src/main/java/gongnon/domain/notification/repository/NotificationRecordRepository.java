@@ -5,7 +5,7 @@ import gongnon.domain.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-
+//
 public interface NotificationRecordRepository extends JpaRepository<NotificationRecord, Long> {
     // 사용자별 알림 목록 조회
     List<NotificationRecord> findByUser(User user);

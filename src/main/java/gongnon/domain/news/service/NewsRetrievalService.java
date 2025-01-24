@@ -100,7 +100,7 @@ public class NewsRetrievalService {
         // 최종적으로 스크랩 성공한 기사들을 담아서 반환
         return new NewsResponseDto(savedArticles);
     }
-
+//
     /**
      * Naver News API 호출(검색) → 기사 items 만 파싱하여 List로 리턴
      */

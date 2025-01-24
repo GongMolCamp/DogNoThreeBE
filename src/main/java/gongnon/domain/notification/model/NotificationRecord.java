@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "notification_record")
 public class NotificationRecord {
-
+//
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

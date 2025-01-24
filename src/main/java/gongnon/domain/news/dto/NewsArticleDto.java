@@ -1,7 +1,7 @@
 package gongnon.domain.news.dto;
 
 import lombok.Data;
-
+//
 @Data
 public class NewsArticleDto {
     private String title;
