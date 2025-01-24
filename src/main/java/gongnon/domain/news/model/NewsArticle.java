@@ -22,6 +22,8 @@ public class NewsArticle {
 
     private String newsLink;
 
+    private String link;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 
