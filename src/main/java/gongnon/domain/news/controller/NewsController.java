@@ -17,4 +17,9 @@ public class NewsController {
     public NewsResponseDto getTodayEconomyNews(@RequestParam(defaultValue = "경제") String query) {
         return newsRetrievalService.getTodayEconomyNews(query);
     }
+/*
+    @GetMapping("/news/today")
+    public NewsResponseDto getTodayNews(@RequestParam String query) {
+        return newsRetrievalService.getTodayNews(query);
+    }*/
 }

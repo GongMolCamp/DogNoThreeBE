@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import gongnon.domain.user.model.User;
@@ -58,5 +59,21 @@ public class UserController {
 		session.setAttribute("loggedInUser", loggedInUser);
 
 		return ResponseEntity.ok("업데이트 성공!");
+	}
+
+	// 추가해본거
+	// 모든 사용자 정보를 반환
+	@GetMapping
+	public ResponseEntity<List<User>> getAllUsers() {
+		List<User> users = userService.findAllUsers();
+		return ResponseEntity.ok(users);
+	}
+
+	// 특정 사용자 정보를 반환
+	@GetMapping("/{id}")
+	public ResponseEntity<User> getUserById(@PathVariable Long id) {
+		Optional<User> user = userService.findUserById(id);
+		return user.map(ResponseEntity::ok)
+				.orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
 }

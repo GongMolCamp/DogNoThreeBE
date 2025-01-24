@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,5 +48,16 @@ public class UserService {
 	public void updateUser(User user) {
 		userRepository.save(user);
 		// user.getId()가 이미 있으므로, JPA가 update 쿼리 수행
+	}
+
+
+	//추가해본거
+	// 모든 사용자 조회
+	public List<User> findAllUsers() {
+		return userRepository.findAll();
+	}
+	// 특정 사용자 조회
+	public Optional<User> findUserById(Long id) {
+		return userRepository.findById(id);
 	}
 }
