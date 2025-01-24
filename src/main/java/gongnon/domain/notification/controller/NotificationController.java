@@ -137,6 +137,7 @@ public class NotificationController {
         List<NotificationRecord> allRecords = notificationRecordRepository
                 .findByUserOrderBySentAtDesc(user);
 
+
         // 4) DTO 변환
         NotificationDto latestDto = (latestRecord != null)
                 ? NotificationDto.fromEntity(latestRecord)
